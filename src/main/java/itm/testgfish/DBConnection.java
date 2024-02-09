@@ -9,25 +9,15 @@ public class DBConnection {
     private String username = "root";
     private String password = "tec20490712";
 
-    public String Connect() {
+    public Connection startConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             this.connection = DriverManager.getConnection(url, username, password);
-            return "Succesful connection";
         } catch (ClassNotFoundException | SQLException e) {
-            return ("Connection error: "+e);
+            System.out.println("Connection error: "+e);
         }
+        return connection;
     }
 
-    public String getUser(int id) {
-        try {
-            PreparedStatement stmt = connection.prepareStatement("SELECT fname FROM users WHERE id="+id);
-            ResultSet resultSet = stmt.executeQuery("SELECT fname FROM users WHERE id="+id);
-            resultSet.next();
-            return resultSet.getString(1);
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return "Nothing found";
-    }
+
 }
