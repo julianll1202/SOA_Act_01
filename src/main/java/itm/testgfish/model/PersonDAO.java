@@ -19,16 +19,19 @@ public class PersonDAO {
         this.connection = conn.startConnection();
     }
 
-    public String getUser(int id) {
+    public Person getUser(int id) {
+        Person p = null;
         try {
-            pstm = connection.prepareStatement("SELECT fname FROM users WHERE id="+id);
-            resultSet = pstm.executeQuery("SELECT fname FROM users WHERE id="+id);
+            query = "SELECT * FROM users WHERE id="+id;
+            pstm = connection.prepareStatement(query);
+            resultSet = pstm.executeQuery(query);
             resultSet.next();
-            return resultSet.getString(1);
+            p = new Person(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3));
+            return p;
         } catch (SQLException e) {
             System.out.println(e);
+            return p;
         }
-        return "Nothing found";
     }
 
     public ArrayList getAllUsers() {
@@ -55,6 +58,32 @@ public class PersonDAO {
             pstm.setString(2, p.getLastName());
             return pstm.executeUpdate() > 0;
         } catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public boolean updateUser(Person p) {
+        query = "UPDATE users SET fname=?, lname=? WHERE id=?";
+        try {
+            pstm = connection.prepareStatement(query);
+            pstm.setString(1,p.getFirstName());
+            pstm.setString(2, p.getLastName());
+            pstm.setInt(3,p.getId());
+            return pstm.executeUpdate() > 0;
+        } catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public boolean deleteUser(int id) {
+        query = "DELETE FROM users WHERE id=?";
+        try {
+            pstm = connection.prepareStatement(query);
+            pstm.setInt(1, id);
+            return pstm.executeUpdate() > 0;
+        }catch (SQLException e) {
             System.out.println(e);
             return false;
         }

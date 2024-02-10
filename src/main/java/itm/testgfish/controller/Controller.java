@@ -30,9 +30,16 @@ public class Controller extends HttpServlet {
                     showAddUserForm(request,response);
                     break;
                 case "/update-user":
+                    showEditUserForm(request,response);
                     break;
                 case "/":
                     showUserList(request, response);
+                    break;
+                case "/delete":
+                    deleteUser(request, response);
+                    break;
+                case "/update":
+                    updateUser(request, response);
                     break;
                 case "/add":
                     insertUser(request, response);
@@ -57,12 +64,33 @@ public class Controller extends HttpServlet {
         RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
         dispatcher.forward(req,res);
     }
+    private void showEditUserForm(HttpServletRequest req, HttpServletResponse res) throws SQLException,ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        Person p = personDAO.getUser(id);
+        req.setAttribute("person", p);
+        RequestDispatcher dispatcher = req.getRequestDispatcher("updateUser.jsp");
+        dispatcher.forward(req,res);
+    }
 
     private void insertUser(HttpServletRequest req, HttpServletResponse res) throws SQLException, IOException {
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
         Person person = new Person(1, firstName, lastName);
         personDAO.addNewUser(person);
+        res.sendRedirect("/testGFish-1.0-SNAPSHOT");
+    }
+
+    private void updateUser(HttpServletRequest req, HttpServletResponse res) throws SQLException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        String firstName = req.getParameter("firstName");
+        String lastName = req.getParameter("lastName");
+        Person person = new Person(id, firstName, lastName);
+        personDAO.updateUser(person);
+        res.sendRedirect("/testGFish-1.0-SNAPSHOT");
+    }
+    private void deleteUser(HttpServletRequest req, HttpServletResponse res) throws SQLException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        personDAO.deleteUser(id);
         res.sendRedirect("/testGFish-1.0-SNAPSHOT");
     }
 }
