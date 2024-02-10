@@ -46,4 +46,17 @@ public class PersonDAO {
         }
         return people;
     }
+
+    public boolean addNewUser(Person p) {
+        query = "INSERT INTO users(id,fname,lname) VALUES(DEFAULT,?,?)";
+        try {
+            pstm = connection.prepareStatement(query);
+            pstm.setString(1,p.getFirstName());
+            pstm.setString(2, p.getLastName());
+            return pstm.executeUpdate() > 0;
+        } catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+    }
 }
