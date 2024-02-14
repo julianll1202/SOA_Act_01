@@ -1,7 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="itm.testgfish.model.PersonDAO" %>
 <%@ page import="itm.testgfish.model.Person" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,11 +28,6 @@
 <div class="container">
 <h1 class="header center  indigo-text darken-4"><%= "SOA - Actividad 1" %></h1>
 <div class="section">
-<%
-PersonDAO p = new PersonDAO();
-Person u = p.getUser(4);
-out.println(u.getFirstName());
- %>
 <table>
     <thead>
         <tr>
@@ -40,21 +38,19 @@ out.println(u.getFirstName());
         </tr>
     </thead>
     <%
-        ArrayList<Person> people = (ArrayList<Person>)request.getAttribute("people");
-        for(int i = 0; i < people.size(); i++) {
+            List<Person> peoples = (List<Person>)request.getAttribute("people");
     %>
+   <c:forEach var="p"  items="${people}">
         <tr>
-            <td><%=people.get(i).getId() %></td>
-            <td><%=people.get(i).getFirstName() %></td>
-            <td><%=people.get(i).getLastName() %></td>
+            <td>${p.getId()}</td>
+            <td>${p.getFirstName()}</td>
+            <td>${p.getLastName()}</td>
             <td>
-                <a class="btn-floating waves-effect waves-light deep-purple lighten-1" href="/testGFish-1.0-SNAPSHOT/update-user?id=${people.get(i).getId()}"><i class="material-icons left">edit</i></a>
-                <a class="btn-floating waves-effect waves-light red" href="/testGFish-1.0-SNAPSHOT/delete?id=${people.get(i).getId()}"><i class="material-icons left">delete</i></a>
+                <a class="btn-floating waves-effect waves-light deep-purple lighten-1" href="/testGFish-1.0-SNAPSHOT/update-user?id=${p.getId()}"><i class="material-icons left">edit</i></a>
+                <a class="btn-floating waves-effect waves-light red" href="/testGFish-1.0-SNAPSHOT/delete?id=${p.getId()}"><i class="material-icons left">delete</i></a>
             </td>
         </tr>
-    <%
-        }
-    %>
+    </c:forEach>
 </table>
 </div>
 <div class="row">

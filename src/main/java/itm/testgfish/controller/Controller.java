@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Controller extends HttpServlet {
     private PersonDAO personDAO;
@@ -59,7 +60,7 @@ public class Controller extends HttpServlet {
     }
 
     private void showUserList(HttpServletRequest req, HttpServletResponse res) throws SQLException,ServletException, IOException {
-        ArrayList<Person> people = personDAO.getAllUsers();
+        List<Person> people = personDAO.getAllUsers();
         req.setAttribute("people", people);
         RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
         dispatcher.forward(req,res);
@@ -75,7 +76,9 @@ public class Controller extends HttpServlet {
     private void insertUser(HttpServletRequest req, HttpServletResponse res) throws SQLException, IOException {
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
-        Person person = new Person(1, firstName, lastName);
+        Person person = new Person();
+        person.setFirstName(firstName);
+        person.setLastName(lastName);
         personDAO.addNewUser(person);
         res.sendRedirect("/testGFish-1.0-SNAPSHOT");
     }

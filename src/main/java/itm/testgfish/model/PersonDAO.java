@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PersonDAO {
     private Connection connection;
@@ -34,8 +35,8 @@ public class PersonDAO {
         }
     }
 
-    public ArrayList getAllUsers() {
-        ArrayList<Person> people = new ArrayList<>();
+    public List getAllUsers() {
+        List<Person> people = new ArrayList<Person>();
         try {
             query = "SELECT * FROM users";
             pstm = connection.prepareStatement(query);
