@@ -1,10 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="itm.testgfish.model.PersonDAO" %>
 <%@ page import="itm.testgfish.model.Person" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +11,7 @@
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <title>JSP - Hello World</title>
+  <title>SOA - Add User</title>
 </head>
 <body>
 <nav>
@@ -26,35 +23,33 @@
     </div>
   </nav>
 <div class="container">
-<h1 class="header center  indigo-text darken-4"><%= "SOA - Actividad 1" %></h1>
-<div class="section">
-<table>
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th></th>
-        </tr>
-    </thead>
-    <%
-            List<Person> peoples = (List<Person>)request.getAttribute("people");
-    %>
-   <c:forEach var="p"  items="${people}">
-        <tr>
-            <td>${p.getId()}</td>
-            <td>${p.getFirstName()}</td>
-            <td>${p.getLastName()}</td>
-            <td>
-                <a class="btn-floating waves-effect waves-light deep-purple lighten-1" href="/testGFish-1.0-SNAPSHOT/update-user?id=${p.getId()}"><i class="material-icons left">edit</i></a>
-                <a class="btn-floating waves-effect waves-light red" href="/testGFish-1.0-SNAPSHOT/delete?id=${p.getId()}"><i class="material-icons left">delete</i></a>
-            </td>
-        </tr>
-    </c:forEach>
-</table>
-</div>
+<h1>Edit User User</h1>
+<%
+Person user = (Person)request.getAttribute("person");
+%>
 <div class="row">
-<a class="btn waves-effect waves-light red" href="/testGFish-1.0-SNAPSHOT/add-user"><i class="material-icons left">add_circle</i> Add User</a>
+    <form class="col s12" action="update" method="post">
+      <div class="row">
+          <div class="input-field col s6">
+            <input  id="id" value="<%=user.getId() %>" readonly  name="id" type="text" class="validate">
+            <label for="id">Id</label>
+          </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+          <input   id="first_name" value="<%=user.getFirstName() %>" name="firstName" type="text" class="validate">
+          <label for="first_name">First Name</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="last_name" value="<%=user.getLastName() %>" name="lastName" type="text" class="validate">
+          <label for="last_name">Last Name</label>
+        </div>
+    </div>
+    <div class="row">
+        <button type="submit" class="btn waves-effect waves-light deep-purple lighten-1"><i class="material-icons left">edit</i> Update</button>
+        <a class="btn waves-effect waves-light green" href="/testGFish-1.0-SNAPSHOT"><i class="material-icons left">home</i> Home</a>
+    </div>
+    </form>
 </div>
 </div>
 <footer class="page-footer blue lighten-2">
